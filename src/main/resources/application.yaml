@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/sport_school
+    username: postgres
+    password: qwerty
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+security:
+  jwt:
+    access: 3600000
+    refresh: 2592000000
+    secret: Zm5kc2p2YmhhanNkaGlxd2hlcXF3ZXdyZXJycndlciA=
