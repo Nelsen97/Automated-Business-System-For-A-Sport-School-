@@ -1,11 +1,7 @@
 package kg.nail.automatedbusinesssystemforasportsschool.web.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import kg.nail.automatedbusinesssystemforasportsschool.enums.Role;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -43,12 +39,12 @@ public class AthleteDTO {
     @NotNull(message = "Не выбрана группа спортсмена!")
     Long groupId;
 
-    @Schema(description = "Дата рождения", example = "")
+    @Schema(description = "Дата рождения", example = "2022-12-06")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull(message = "Дата рождения должна быть заполнена!")
     LocalDate dateOfBirth;
 
-    @Schema(description = "Номер телефона", example = "")
+    @Schema(description = "Номер телефона", example = "996777566962")
     @NotNull(message = "Номер телефона не должен быть пустым!")
     String phoneNumber;
 
@@ -71,7 +67,7 @@ public class AthleteDTO {
     @NotNull(message = "Фамилия родителя не может быть пустой!")
     String parentsLastName;
 
-    @Schema(description = "Номер телефона родителя", example = "")
+    @Schema(description = "Номер телефона родителя", example = "996777566962")
     @NotNull(message = "Номер родителя не может быть пустым")
     String parentsPhoneNumber;
 

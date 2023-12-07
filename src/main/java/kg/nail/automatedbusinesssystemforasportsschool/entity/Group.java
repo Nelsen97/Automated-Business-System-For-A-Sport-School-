@@ -1,7 +1,6 @@
 package kg.nail.automatedbusinesssystemforasportsschool.entity;
 
 import jakarta.persistence.*;
-import kg.nail.automatedbusinesssystemforasportsschool.entity.Athlete;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
