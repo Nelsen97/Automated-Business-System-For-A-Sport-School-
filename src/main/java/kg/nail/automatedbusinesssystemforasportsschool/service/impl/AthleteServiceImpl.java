@@ -2,6 +2,7 @@ package kg.nail.automatedbusinesssystemforasportsschool.service.impl;
 
 import kg.nail.automatedbusinesssystemforasportsschool.entity.Athlete;
 import kg.nail.automatedbusinesssystemforasportsschool.entity.Group;
+import kg.nail.automatedbusinesssystemforasportsschool.exception.CustomException;
 import kg.nail.automatedbusinesssystemforasportsschool.exception.ResourceNotFoundException;
 import kg.nail.automatedbusinesssystemforasportsschool.mappers.AthleteMapper;
 import kg.nail.automatedbusinesssystemforasportsschool.repository.AthleteRepository;
@@ -25,15 +26,20 @@ public class AthleteServiceImpl implements AthleteService {
     @Override
     public AthleteDTO registerAthlete(AthleteDTO athleteDTO) {
 
-        athleteDTO.setPassword(encoder.encode(athleteDTO.getPassword()));
-        Athlete athlete = athleteMapper.toEntity(athleteDTO);
+        if (athleteRepository.existsByUsername(athleteDTO.getUsername())) {
+            throw new CustomException("Такой пользователь уже зарегистрирован. " +
+                    "Пожалуйста используйте другое имя пользователя.");
+        }
 
+        Athlete athlete = new Athlete();
+        athleteDTO.setPassword(encoder.encode(athleteDTO.getPassword()));
 
         Group group = groupRepository.findById(athleteDTO.getGroupId()).orElseThrow(
                 () -> new ResourceNotFoundException("No such group exists!")
         );
 
         athlete.setGroup(group);
+        athlete = athleteMapper.toEntity(athleteDTO);
         athleteRepository.save(athlete);
 
         return athleteMapper.toDTO(athlete);

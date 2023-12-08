@@ -6,9 +6,9 @@ import kg.nail.automatedbusinesssystemforasportsschool.entity.Parent;
 import kg.nail.automatedbusinesssystemforasportsschool.enums.Role;
 import kg.nail.automatedbusinesssystemforasportsschool.enums.Source;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 @Schema(description = "New athlete register")
 @FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class AthleteDTO {
 
     Long id;
@@ -31,8 +32,9 @@ public class AthleteDTO {
     @Schema(description = "Отчество", example = "Иванович")
     String patronymic;
 
-    @Schema(description = "Имя пользователя", example = "IvanovIvan ")
+    @Schema(description = "Имя пользователя", example = "IvanovIvan")
     @NotBlank(message = "Имя пользователя должно быть заполнено!")
+    @Size(min = 6, max = 50, message = "Имя пользователя должно содержать от 6 до 50 символов")
     String username;
 
     @Schema(description = "Пароль", example = "Password123")
@@ -42,18 +44,16 @@ public class AthleteDTO {
 
     @Schema(description = "Группа спортсмена", example = "Младшая (утро)")
     @NotNull(message = "Не выбрана группа спортсмена!")
+    @Min(value = 1)
     Long groupId;
 
-    @Schema(description = "Дата зачисления", example = "2022-12-08")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @Schema(description = "Дата зачисления")
     @NotNull(message = "Дата зачисления должна быть заполнена!")
-    private final LocalDate enrollmentDate;
+    private final LocalDate enrollmentDate = LocalDate.now();
 
-    @Schema(description = "Дата рождения", example = "2022-12-06")
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @Schema(description = "Дата рождения", example = "2015-07-08")
     @NotNull(message = "Дата рождения должна быть заполнена!")
     @Past(message = "Дата рождения должна быть в прошлом")
-    @Max(value = 5, message = "Дата рождения должна быть не ближе 5 лет от текущей даты")
     LocalDate dateOfBirth;
 
     @Schema(description = "Номер телефона", example = "996777566962")
@@ -65,12 +65,12 @@ public class AthleteDTO {
 
     @Schema(description = "Рост", example = "155")
     @NotNull(message = "Рост не должен быть пустым")
-    @Min(value = 1, message = "Рост не может быть отрицательным")
+    @Min(value = 1, message = "Рост не может быть меньше 1")
     Integer height;
 
     @Schema(description = "Вес", example = "50")
     @NotNull(message = "Вес не должен быть пустым")
-    @Min(value = 1, message = "Вес не может быть меньше 1 кг")
+    @Min(value = 1, message = "Вес не может быть меньше 1")
     Double weight;
 
     @Schema(description = "Родители спортсмена")
@@ -85,10 +85,8 @@ public class AthleteDTO {
     String school;
 
     @Schema(description = "Роль в школе", example = "ROLE_ATHLETE")
-    @NotNull(message = "Роль не может быть пустой!")
-    Role role = Role.ROLE_ATHLETE;
+    final Role role = Role.ROLE_ATHLETE;
 
     @Schema(description = "Активен ли атлет", example = "true")
-    private boolean active = true;
-
+    final boolean active = true;
 }
