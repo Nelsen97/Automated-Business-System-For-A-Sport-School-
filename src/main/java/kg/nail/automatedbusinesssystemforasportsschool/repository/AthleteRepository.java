@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface AthleteRepository extends JpaRepository<Athlete, Long> {
     Optional<Athlete> findByUsername(String username);
+    Optional<Athlete> findByFirstNameOrLastName(String firstName, String lastName);
 
     boolean existsByUsername(String username);
 }

@@ -1,21 +1,18 @@
 package kg.nail.automatedbusinesssystemforasportsschool.service;
 
 import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteDTO;
-import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteExampleDTO;
 
 public interface AthleteService {
 
-    AthleteExampleDTO getById(Long id);
+    AthleteDTO getById(Long id);
 
-    AthleteExampleDTO getByUsername(String username);
-
-    AthleteExampleDTO createAthlete(AthleteExampleDTO athlete);
+    AthleteDTO getByUsername(String username);
 
     AthleteDTO registerAthlete(AthleteDTO athlete);
 
-    AthleteExampleDTO getByName(String name);
+    AthleteDTO getByFirstOrLastName(String firstName, String lastName);
 
-    AthleteExampleDTO update(AthleteExampleDTO athlete);
+    AthleteDTO update(AthleteDTO athlete);
 
     void delete(Long id);
 

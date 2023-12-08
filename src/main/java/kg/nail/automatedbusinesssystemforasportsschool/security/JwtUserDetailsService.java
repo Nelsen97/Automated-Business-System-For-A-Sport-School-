@@ -1,7 +1,7 @@
 package kg.nail.automatedbusinesssystemforasportsschool.security;
 
 import kg.nail.automatedbusinesssystemforasportsschool.service.AthleteService;
-import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteExampleDTO;
+import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -19,7 +19,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AthleteExampleDTO athlete = athleteService.getByUsername(username);
+        AthleteDTO athlete = athleteService.getByUsername(username);
         return JwtEntityFactory.create(athlete);
     }
 }

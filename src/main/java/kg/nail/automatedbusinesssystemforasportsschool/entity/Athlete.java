@@ -24,25 +24,11 @@ public class Athlete extends User {
     @Column(name = "payment_amount")
     BigDecimal paymentAmount;
 
-    @Column(name = "parents_last_name")
-    String parentsLastName;
-
-    @Column(name = "parents_first_name")
-    String parentsFirstName;
-
-    @Column(name = "parents_phone_number")
-    String parentsPhoneNumber;
-
-    String source;
-
     String school;
 
     Integer height;
 
     Double weight;
-
-    @Column(columnDefinition = "boolean default true")
-    Boolean active;
 
     @ManyToMany(mappedBy = "children")
     List<Parent> parents;

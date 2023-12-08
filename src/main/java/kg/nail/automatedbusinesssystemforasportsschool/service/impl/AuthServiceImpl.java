@@ -3,7 +3,7 @@ package kg.nail.automatedbusinesssystemforasportsschool.service.impl;
 import kg.nail.automatedbusinesssystemforasportsschool.security.JwtTokenProvider;
 import kg.nail.automatedbusinesssystemforasportsschool.service.AthleteService;
 import kg.nail.automatedbusinesssystemforasportsschool.service.AuthService;
-import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteExampleDTO;
+import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteDTO;
 import kg.nail.automatedbusinesssystemforasportsschool.web.dto.auth.JwtRequest;
 import kg.nail.automatedbusinesssystemforasportsschool.web.dto.auth.JwtResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +28,12 @@ public class AuthServiceImpl implements AuthService {
                 loginRequest.getUsername().toLowerCase(), loginRequest.getPassword())
         );
 
-        AthleteExampleDTO user = athleteService.getByUsername(loginRequest.getUsername());
+        AthleteDTO user = athleteService.getByUsername(loginRequest.getUsername());
 
         jwtResponse.setId(user.getId());
         jwtResponse.setUsername(user.getUsername());
         jwtResponse.setAccessToken(jwtTokenProvider.createAccessToken(
-                user.getId(), user.getUsername(),user.getRoles()
+                user.getId(), user.getUsername(),user.getRole()
         ));
 
         jwtResponse.setRefreshToken(jwtTokenProvider.createRefreshToken(user.getId(), user.getUsername()));

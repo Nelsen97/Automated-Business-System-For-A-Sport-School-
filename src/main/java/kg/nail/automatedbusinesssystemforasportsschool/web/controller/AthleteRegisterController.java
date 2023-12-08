@@ -1,6 +1,7 @@
 package kg.nail.automatedbusinesssystemforasportsschool.web.controller;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import kg.nail.automatedbusinesssystemforasportsschool.exception.ResourceNotFoundException;
 import kg.nail.automatedbusinesssystemforasportsschool.service.AthleteService;
 import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteDTO;
@@ -23,7 +24,7 @@ public class AthleteRegisterController {
     private final AthleteService athleteService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerAthlete(@RequestBody AthleteDTO athlete) {
+    public ResponseEntity<?> registerAthlete(@Valid @RequestBody AthleteDTO athlete) {
         try {
             return new ResponseEntity<>(athleteService.registerAthlete(athlete), HttpStatus.NOT_FOUND);
         } catch (ResourceNotFoundException | IllegalArgumentException | IllegalStateException e) {

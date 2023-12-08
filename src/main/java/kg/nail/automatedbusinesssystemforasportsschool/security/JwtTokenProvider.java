@@ -10,7 +10,7 @@ import kg.nail.automatedbusinesssystemforasportsschool.enums.Role;
 import kg.nail.automatedbusinesssystemforasportsschool.exception.AccessDeniedException;
 import kg.nail.automatedbusinesssystemforasportsschool.service.AthleteService;
 import kg.nail.automatedbusinesssystemforasportsschool.service.props.JwtProperties;
-import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteExampleDTO;
+import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteDTO;
 import kg.nail.automatedbusinesssystemforasportsschool.web.dto.auth.JwtResponse;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +24,8 @@ import org.springframework.stereotype.Service;
 import java.security.Key;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -44,10 +42,10 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(jwtProperties.getSecret().getBytes());
     }
 
-    public String createAccessToken(Long userId, String username, Set<Role> roles) {
+    public String createAccessToken(Long userId, String username, Role role) {
         Claims claims = Jwts.claims().setSubject(username);
         claims.put("id", userId);
-        claims.put("roles", resolveRoles(roles));
+        claims.put("roles", Collections.singletonList(role));
         Instant expirationDate = Instant.now().plus(jwtProperties.getAccess(), ChronoUnit.HOURS);
         return Jwts.builder()
                 .setClaims(claims)
@@ -74,11 +72,11 @@ public class JwtTokenProvider {
             throw new AccessDeniedException();
         }
         Long userId = Long.valueOf(getId(refreshToken));
-        AthleteExampleDTO user = athleteService.getById(userId);
+        AthleteDTO user = athleteService.getById(userId);
         return JwtResponse.builder()
                 .id(userId)
                 .username(user.getUsername())
-                .accessToken(createAccessToken(userId, user.getUsername(), user.getRoles()))
+                .accessToken(createAccessToken(userId, user.getUsername(), user.getRole()))
                 .refreshToken(createRefreshToken(userId, user.getUsername()))
                 .build();
     }
@@ -96,12 +94,6 @@ public class JwtTokenProvider {
         String username = getUsername(token);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
-    private List<String> resolveRoles(Set<Role> roles) {
-        return roles.stream()
-                .map(Enum::name)
-                .collect(Collectors.toList());
     }
 
     private String getId(String token) {

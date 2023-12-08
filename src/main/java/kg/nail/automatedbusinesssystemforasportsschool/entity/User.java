@@ -2,11 +2,11 @@ package kg.nail.automatedbusinesssystemforasportsschool.entity;
 
 import jakarta.persistence.*;
 import kg.nail.automatedbusinesssystemforasportsschool.enums.Role;
+import kg.nail.automatedbusinesssystemforasportsschool.enums.Source;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @MappedSuperclass
 @Getter
@@ -28,7 +28,7 @@ public abstract class User {
     @Column(name = "date_of_birth")
     LocalDate dateOfBirth;
 
-    @Column(name = "personal_phone_number")
+    @Column(name = "phone_number")
     String phoneNumber;
 
     String address;
@@ -36,13 +36,15 @@ public abstract class User {
     @Column(name = "enrollment_date")
     LocalDate enrollmentDate;
 
+    @Enumerated(value = EnumType.STRING)
+    Source source;
+
     String username;
 
     String password;
 
-    @Column(name = "role")
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "users_roles")
+    Boolean active;
+
     @Enumerated(value = EnumType.STRING)
-    Set<Role> roles;
+    Role role;
 }

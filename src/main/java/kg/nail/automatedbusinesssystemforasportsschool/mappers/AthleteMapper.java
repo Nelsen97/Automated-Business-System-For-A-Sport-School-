@@ -2,14 +2,18 @@ package kg.nail.automatedbusinesssystemforasportsschool.mappers;
 
 import kg.nail.automatedbusinesssystemforasportsschool.entity.Athlete;
 import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteDTO;
-import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteExampleDTO;
+import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface AthleteMapper {
-    AthleteExampleDTO toExampleDTO(Athlete athlete);
 
-    Athlete toEntity(AthleteExampleDTO athlete);
-
+    @Mapping(target = "groupId", source = "group.id")
     AthleteDTO toDTO(Athlete athlete);
+
+    @Mapping(target = "paymentAmount", ignore = true)
+    @InheritInverseConfiguration
+    Athlete toEntity(AthleteDTO athleteDTO);
+
 }
