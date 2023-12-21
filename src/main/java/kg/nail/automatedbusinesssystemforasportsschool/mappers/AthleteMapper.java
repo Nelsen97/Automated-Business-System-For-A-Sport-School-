@@ -48,7 +48,6 @@ public interface AthleteMapper {
     @Mapping(target = "parents", ignore = true)
     Athlete toEntityFromTrainerRegisterDTO(TrainerRegisterDTO trainer);
 
-    TrainerRegisterDTO trainerRegisterDTOFromEntity(Athlete athlete);
 
     @Mapping(target = "groups", expression = "java(mapTrainerGroups(athlete))")
     TrainerDTO toTrainerDTOFromEntity(Athlete athlete);

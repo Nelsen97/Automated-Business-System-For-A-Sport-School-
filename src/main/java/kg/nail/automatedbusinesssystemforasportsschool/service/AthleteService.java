@@ -10,8 +10,6 @@ public interface AthleteService {
 
     AthleteDTO getByUsername(String username);
 
-    AthleteDTO getByFirstOrLastName(String firstName, String lastName);
-
     AthleteDTO registerAthlete(AthleteDTO athlete);
 
     AthleteDTO update(Long id, AthleteDTO athleteDTO);

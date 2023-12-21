@@ -17,12 +17,6 @@ public interface GroupMapper {
     @Mapping(target = "trainerId", source = "trainer.id")
     GroupDTO toGroupDTO(Group group);
 
-    @Mapping(target = "athletes", ignore = true)
-    @Mapping(target = "active", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "trainer", ignore = true)
-    Group toEntity(GroupDTO group);
-
     @Mapping(target = "trainer.id", source = "trainerId")
     @Mapping(target = "active", ignore = true)
     @Mapping(target = "id", ignore = true)
@@ -35,5 +29,4 @@ public interface GroupMapper {
                 .toList();
     }
 
-    AddedAthletesToGroupDTO toAddAthletesDTO(Group group);
 }
