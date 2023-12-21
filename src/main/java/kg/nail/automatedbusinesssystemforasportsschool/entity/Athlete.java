@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import kg.nail.automatedbusinesssystemforasportsschool.enums.Role;
 import kg.nail.automatedbusinesssystemforasportsschool.enums.Source;
+import kg.nail.automatedbusinesssystemforasportsschool.util.TimeHelperUtil;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -34,7 +35,7 @@ public class Athlete {
     String patronymic;
 
     @Column(name = "date_of_birth")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = TimeHelperUtil.DATE_FORMAT)
     LocalDate dateOfBirth;
 
     @Column(name = "phone_number")
@@ -43,7 +44,7 @@ public class Athlete {
     String address;
 
     @Column(name = "enrollment_date")
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(pattern = TimeHelperUtil.DATE_FORMAT)
     LocalDate enrollmentDate;
 
     @Enumerated(value = EnumType.STRING)
@@ -53,10 +54,12 @@ public class Athlete {
 
     String password;
 
-    Boolean active;
+    @Builder.Default
+    Boolean active = true;
 
     @Enumerated(value = EnumType.STRING)
-    Role role;
+    @Builder.Default
+    Role role = Role.ROLE_ATHLETE;
 
     @ManyToOne
     @JoinColumn(name = "group_id")

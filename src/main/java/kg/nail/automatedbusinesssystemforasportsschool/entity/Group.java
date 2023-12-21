@@ -22,7 +22,13 @@ public class Group {
 
     String name;
 
-    @OneToMany(mappedBy = "group")
-    List<Athlete> athletes;
+    @ManyToOne
+    @JoinColumn(name = "trainer_id")
+    Athlete trainer;
 
+    @Builder.Default
+    Boolean active = true;
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL)
+    List<Athlete> athletes;
 }

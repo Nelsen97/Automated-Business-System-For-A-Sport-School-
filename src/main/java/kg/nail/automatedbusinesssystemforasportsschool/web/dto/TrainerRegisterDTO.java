@@ -2,8 +2,6 @@ package kg.nail.automatedbusinesssystemforasportsschool.web.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
-import kg.nail.automatedbusinesssystemforasportsschool.entity.Parent;
-import kg.nail.automatedbusinesssystemforasportsschool.enums.Role;
 import kg.nail.automatedbusinesssystemforasportsschool.enums.Source;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -11,13 +9,12 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
-@Schema(description = "Athlete DTO")
+@Schema(description = "Trainer registration DTO")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class AthleteDTO {
+public class TrainerRegisterDTO {
 
     Long id;
 
@@ -42,12 +39,7 @@ public class AthleteDTO {
             message = "Пароль должен содержать минимум 8 знаков, включая хотя бы одну большую букву и одну цифру")
     String password;
 
-    @Schema(description = "Группа спортсмена", example = "Младшая (утро)")
-    @NotNull(message = "Не выбрана группа спортсмена!")
-    @Min(value = 1)
-    Long groupId;
-
-    @Schema(description = "Дата рождения", example = "2015-07-08")
+    @Schema(description = "Дата рождения", example = "2000-30-12")
     @NotNull(message = "Дата рождения должна быть заполнена!")
     @Past(message = "Дата рождения должна быть в прошлом")
     LocalDate dateOfBirth;
@@ -59,27 +51,7 @@ public class AthleteDTO {
     @Schema(description = "Домашний адресс спортсмена", example = "ул.Советская 30")
     String address;
 
-    @Schema(description = "Рост", example = "155")
-    @NotNull(message = "Рост не должен быть пустым")
-    @Min(value = 80, message = "Рост не может быть меньше 1")
-    Integer height;
-
-    @Schema(description = "Вес", example = "50")
-    @NotNull(message = "Вес не должен быть пустым")
-    @Min(value = 20, message = "Вес не может быть меньше 1")
-    Double weight;
-
-    @Schema(description = "Родители спортсмена")
-    List<Parent> parents;
-
     @Schema(description = "Откуда узнали о клубе", example = "SOCIAL_NETWORK")
     @NotNull(message = "Источник не должен быть пустым")
     Source source;
-
-    @Schema(description = "Школа в которой обучается спортсмен", example = "№63")
-    @NotBlank(message = "Школа должна быть заполненной")
-    String school;
-
-    @Builder.Default
-    Role role = Role.ROLE_ATHLETE;
 }

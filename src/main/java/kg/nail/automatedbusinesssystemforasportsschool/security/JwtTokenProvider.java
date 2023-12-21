@@ -72,7 +72,7 @@ public class JwtTokenProvider {
             throw new AccessDeniedException();
         }
         Long userId = Long.valueOf(getId(refreshToken));
-        AthleteDTO user = athleteService.getById(userId);
+        AthleteDTO user = athleteService.getUserById(userId);
         return JwtResponse.builder()
                 .id(userId)
                 .username(user.getUsername())

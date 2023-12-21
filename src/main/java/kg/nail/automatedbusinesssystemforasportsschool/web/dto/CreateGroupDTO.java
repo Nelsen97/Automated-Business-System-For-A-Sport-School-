@@ -7,20 +7,16 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
-@Data
 @Schema(description = "Group DTO")
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GroupDTO {
+@Data
+public class CreateGroupDTO {
 
     @Schema(description = "Название группы", example = "Младшая (утро)")
     @NotBlank(message = "Название группы не может быть пустой!")
     String name;
 
     @Schema(description = "Тренер группы", example = "Артём")
-    @NotNull
+    @NotNull(message = "Группе необходимо присвоить тренера!")
     Long trainerId;
-
-    List<Long> athletes;
 }
