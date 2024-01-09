@@ -16,6 +16,8 @@ public interface AthleteService {
 
     void delete(Long athleteId);
 
+    AthleteDTO restoreAthlete(Long athleteId);
+
     Athlete getAthleteById(Long athleteId);
 
     TrainerRegisterDTO registerTrainer(TrainerRegisterDTO trainer);

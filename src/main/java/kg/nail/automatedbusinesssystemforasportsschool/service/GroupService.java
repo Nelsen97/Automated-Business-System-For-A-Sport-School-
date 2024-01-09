@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface GroupService {
 
-    GroupDTO getById(Long id);
+    GroupDTO getGroupById(Long groupId);
 
     Long createGroup(CreateGroupDTO group);
 
-    void deleteGroupById(Long id);
+    void delete(Long groupId);
 
-    Long updateGroup(Long groupId, GroupDTO groupDTO);
+    Long update(Long groupId, GroupDTO groupDTO);
 
     GroupDTO restoreGroupById(Long groupId);
 

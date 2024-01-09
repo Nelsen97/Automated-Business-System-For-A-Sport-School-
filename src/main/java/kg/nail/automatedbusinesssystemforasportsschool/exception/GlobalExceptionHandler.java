@@ -1,9 +1,11 @@
 package kg.nail.automatedbusinesssystemforasportsschool.exception;
 
+
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import kg.nail.automatedbusinesssystemforasportsschool.web.dto.ExceptionBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindException;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -44,24 +46,24 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException e) {
-        BindingResult bindingResult = e.getBindingResult();
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        String errorMessage = fieldErrors.stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(", "));
-        return new ResponseEntity<>("Bad Request: " + errorMessage, HttpStatus.BAD_REQUEST);
+    public ExceptionBody handleMethodArgumentNotValid(MethodArgumentNotValidException e) {
+        ExceptionBody exceptionBody = new ExceptionBody("Validation failed.");
+        List<FieldError> errors = e.getBindingResult().getFieldErrors();
+        exceptionBody.setErrors(errors.stream()
+                .collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage)));
+        return exceptionBody;
     }
 
-    @ExceptionHandler(BindException.class)
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<String> handleBindExceptions(BindException e) {
-        BindingResult bindingResult = e.getBindingResult();
-        List<FieldError> fieldErrors = bindingResult.getFieldErrors();
-        String errorMessage = fieldErrors.stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(", "));
-        return new ResponseEntity<>("Bad Request: " + errorMessage, HttpStatus.BAD_REQUEST);
+    public ExceptionBody handleConstraintViolation(ConstraintViolationException e) {
+        ExceptionBody exceptionBody = new ExceptionBody("Validation failed.");
+        exceptionBody.setErrors(e.getConstraintViolations().stream()
+                .collect(Collectors.toMap(
+                        violation -> violation.getPropertyPath().toString(),
+                        ConstraintViolation::getMessage
+                )));
+        return exceptionBody;
     }
 
     @ExceptionHandler(DateTimeException.class)

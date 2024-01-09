@@ -26,7 +26,7 @@ public class GroupController {
 
     @GetMapping("/{id}")
     public ResponseEntity<GroupDTO> getGroupById(@PathVariable Long id) {
-        return new ResponseEntity<>(groupService.getById(id), HttpStatus.OK);
+        return new ResponseEntity<>(groupService.getGroupById(id), HttpStatus.OK);
     }
 
     @PostMapping("/create")
@@ -36,7 +36,7 @@ public class GroupController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteGroup(@PathVariable Long id) {
-        groupService.deleteGroupById(id);
+        groupService.delete(id);
 
         return ResponseEntity.ok().build();
     }
@@ -44,7 +44,7 @@ public class GroupController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Long> updateGroup(@PathVariable("id") Long groupId,
                                             @Valid @RequestBody GroupDTO groupDTO) {
-        return new ResponseEntity<>(groupService.updateGroup(groupId, groupDTO), HttpStatus.OK);
+        return new ResponseEntity<>(groupService.update(groupId, groupDTO), HttpStatus.OK);
     }
 
     @PutMapping("/restore/{id}")

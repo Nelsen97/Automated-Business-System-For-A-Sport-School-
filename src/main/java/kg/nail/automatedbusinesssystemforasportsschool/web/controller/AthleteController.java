@@ -31,19 +31,24 @@ public class AthleteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AthleteDTO> getUserById(@PathVariable Long id) {
-        return new ResponseEntity<>(athleteService.getUserById(id), HttpStatus.OK);
+    public ResponseEntity<AthleteDTO> getUserById(@PathVariable("id") Long athleteId) {
+        return new ResponseEntity<>(athleteService.getUserById(athleteId), HttpStatus.OK);
     }
 
     @PutMapping("/update/athlete/{id}")
-    public ResponseEntity<AthleteDTO> updateAthlete(@PathVariable Long id, @RequestBody AthleteDTO athlete) {
-        return new ResponseEntity<>(athleteService.update(id, athlete), HttpStatus.OK);
+    public ResponseEntity<AthleteDTO> updateAthlete(@PathVariable("id") Long athleteId, @RequestBody AthleteDTO athlete) {
+        return new ResponseEntity<>(athleteService.update(athleteId, athlete), HttpStatus.OK);
     }
 
     @DeleteMapping("delete/{id}")
-    public ResponseEntity<Void> deleteAthlete(@PathVariable Long id) {
-        athleteService.delete(id);
+    public ResponseEntity<Void> deleteAthlete(@PathVariable("id") Long athleteId) {
+        athleteService.delete(athleteId);
 
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("restore/{id}")
+    public ResponseEntity<AthleteDTO> restoreAthlete(@PathVariable("id") Long athleteId) {
+        return new ResponseEntity<>(athleteService.restoreAthlete(athleteId), HttpStatus.OK);
     }
 }

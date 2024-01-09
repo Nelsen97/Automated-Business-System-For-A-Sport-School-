@@ -24,6 +24,7 @@ public interface AthleteMapper {
     @Mapping(target = "parents", ignore = true)
     @Mapping(target = "enrollmentDate", ignore = true)
     @Mapping(target = "active", constant = "true")
+    @Mapping(target = "role", constant = "ROLE_ATHLETE")
     Athlete toEntityFromAthleteDTO(AthleteDTO athleteDTO);
 
     @Mapping(target = "id", ignore = true)
@@ -31,7 +32,7 @@ public interface AthleteMapper {
     @Mapping(target = "username", ignore = true)
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "source", ignore = true)
-    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "role", constant = "ROLE_ATHLETE")
     @Mapping(target = "active", ignore = true)
     @Mapping(target = "group.id", source = "groupId")
     @Mapping(target = "paymentAmount", ignore = true)

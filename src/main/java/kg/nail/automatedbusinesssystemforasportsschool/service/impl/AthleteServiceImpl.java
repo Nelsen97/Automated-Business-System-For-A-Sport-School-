@@ -1,13 +1,11 @@
 package kg.nail.automatedbusinesssystemforasportsschool.service.impl;
 
 import kg.nail.automatedbusinesssystemforasportsschool.entity.Athlete;
-import kg.nail.automatedbusinesssystemforasportsschool.entity.Group;
 import kg.nail.automatedbusinesssystemforasportsschool.enums.Role;
 import kg.nail.automatedbusinesssystemforasportsschool.exception.CustomException;
 import kg.nail.automatedbusinesssystemforasportsschool.exception.ResourceNotFoundException;
 import kg.nail.automatedbusinesssystemforasportsschool.mappers.AthleteMapper;
 import kg.nail.automatedbusinesssystemforasportsschool.repository.AthleteRepository;
-import kg.nail.automatedbusinesssystemforasportsschool.repository.GroupRepository;
 import kg.nail.automatedbusinesssystemforasportsschool.service.AthleteService;
 import kg.nail.automatedbusinesssystemforasportsschool.web.dto.AthleteDTO;
 import kg.nail.automatedbusinesssystemforasportsschool.web.dto.TrainerRegisterDTO;
@@ -25,22 +23,10 @@ public class AthleteServiceImpl implements AthleteService {
     private final AthleteRepository athleteRepository;
     private final AthleteMapper athleteMapper;
     private final PasswordEncoder encoder;
-    private final GroupRepository groupRepository;
 
     @Override
     public AthleteDTO getUserById(Long athleteId) {
         Athlete athlete = getAthleteById(athleteId);
-
-        return athleteMapper.toDTO(athlete);
-    }
-
-    @Override
-    public AthleteDTO getByFirstOrLastName(String firstName, String lastName) {
-
-        Athlete athlete = athleteRepository.findByFirstNameContainsIgnoreCaseOrLastNameContainsIgnoreCase(
-                firstName, lastName).orElseThrow(
-                () -> new ResourceNotFoundException("There is no such athlete!")
-        );
 
         return athleteMapper.toDTO(athlete);
     }
@@ -54,14 +40,7 @@ public class AthleteServiceImpl implements AthleteService {
         }
 
         athleteDTO.setPassword(encoder.encode(athleteDTO.getPassword()));
-
-        Group group = groupRepository.findById(athleteDTO.getGroupId()).orElseThrow(
-                () -> new ResourceNotFoundException("No such group exists!")
-        );
-
         Athlete athlete = athleteMapper.toEntityFromAthleteDTO(athleteDTO);
-        athlete.setGroup(group);
-        athlete.setRole(Role.ROLE_ATHLETE);
         athlete.setEnrollmentDate(LocalDate.now());
         athleteRepository.save(athlete);
 
@@ -83,6 +62,15 @@ public class AthleteServiceImpl implements AthleteService {
         Athlete athlete = getAthleteById(athleteId);
         athlete.setActive(false);
         athleteRepository.save(athlete);
+    }
+
+    @Override
+    public AthleteDTO restoreAthlete(Long athleteId) {
+        Athlete athlete = getAthleteById(athleteId);
+        athlete.setActive(true);
+        athleteRepository.save(athlete);
+
+        return athleteMapper.toDTO(athlete);
     }
 
     @Override

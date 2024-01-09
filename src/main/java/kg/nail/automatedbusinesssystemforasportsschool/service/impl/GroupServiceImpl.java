@@ -31,9 +31,8 @@ public class GroupServiceImpl implements GroupService {
     private final AthleteRepository athleteRepository;
 
     @Override
-    public GroupDTO getById(Long id) {
-        Group group = groupRepository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Такой группы не существует."));
+    public GroupDTO getGroupById(Long id) {
+        Group group = findGroupById(id);
 
         return groupMapper.toGroupDTO(group);
     }
@@ -56,15 +55,15 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void deleteGroupById(Long id) {
-        Group group = getGroupById(id);
+    public void delete(Long id) {
+        Group group = findGroupById(id);
         group.setActive(false);
         groupRepository.save(group);
     }
 
     @Override
-    public Long updateGroup(Long groupId, GroupDTO groupDTO) {
-        Group group = getGroupById(groupId);
+    public Long update(Long groupId, GroupDTO groupDTO) {
+        Group group = findGroupById(groupId);
         Athlete trainer = athleteService.getAthleteById(groupDTO.getTrainerId());
 
         if (group.getName().equals(groupDTO.getName())) {
@@ -83,7 +82,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public GroupDTO restoreGroupById(Long groupId) {
-        Group group = getGroupById(groupId);
+        Group group = findGroupById(groupId);
         if (Boolean.FALSE.equals(group.getActive())) {
             group.setActive(true);
             groupRepository.save(group);
@@ -96,7 +95,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public List<AthleteDTO> getAthletesByGroupId(Long groupId) {
-        Group group = getGroupById(groupId);
+        Group group = findGroupById(groupId);
         List<Athlete> athletesByGroup = athleteRepository.findAllByGroup(group);
 
 
@@ -107,7 +106,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public TrainerDTO getTrainerByGroupId(Long groupId) {
-        Group group = getGroupById(groupId);
+        Group group = findGroupById(groupId);
 
         Athlete trainer = athleteRepository.findByRoleAndId(Role.ROLE_TRAINER, group.getTrainer().getId()).orElseThrow(
                 () -> new ResourceNotFoundException("Нет такого тренера")
@@ -116,7 +115,7 @@ public class GroupServiceImpl implements GroupService {
         return athleteMapper.toTrainerDTOFromEntity(trainer);
     }
 
-    private Group getGroupById(Long id) {
+    private Group findGroupById(Long id) {
         return groupRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("There is no such group")
         );
